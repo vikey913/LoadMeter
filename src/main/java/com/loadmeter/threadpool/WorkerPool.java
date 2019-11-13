@@ -6,13 +6,18 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.loadmeter.util.CmdUtil;
+import com.loadmeter.vo.ThreadPoolVO;
+
 public class WorkerPool {
 
-    public static void main(String args[]) throws InterruptedException{
+    public static void main(String args[]) throws Exception{
+    	ThreadPoolVO threadArgs = CmdUtil.parse(args);
+    	
         RejectedExecutionHandlerImpl rejectionHandler = new RejectedExecutionHandlerImpl();
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
 
-        ThreadPoolExecutor executorPool = new ThreadPoolExecutor(2, 4, 10, 
+        ThreadPoolExecutor executorPool = new ThreadPoolExecutor(threadArgs.getCorePool(), threadArgs.getMaximumPool(), 10, 
         		TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(2), threadFactory, rejectionHandler);
 
         MyMonitorThread monitor = new MyMonitorThread(executorPool, 3);
@@ -20,7 +25,7 @@ public class WorkerPool {
         Thread monitorThread = new Thread(monitor);
         monitorThread.start();
         
-        for(int i=0; i<10; i++){
+        for(int i=0; i< threadArgs.getTotalRequest(); i++){
             executorPool.execute(new WorkerThread("cmd"+i));
         }
         
