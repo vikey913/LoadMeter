@@ -30,14 +30,14 @@ public class SimpleThreadPoolDriver {
 		
 		ExecutorService executor = Executors.newFixedThreadPool(SimpleThreadPoolDriver.threadCount);
         
-		for (int i = 0; i < SimpleThreadPoolDriver.requestCount; i++) {
-            Runnable worker = new WorkerThread("" + i);
-            executor.execute(worker);
-        }
-        executor.shutdown();
-        while (!executor.isTerminated()) {}
-        
-        System.out.println("Finished all threads");
+//		for (int i = 0; i < SimpleThreadPoolDriver.requestCount; i++) {
+//            Runnable worker = new RestWorkerThread("" + i);
+//            executor.execute(worker);
+//        }
+//        executor.shutdown();
+//        while (!executor.isTerminated()) {}
+//        
+//        System.out.println("Finished all threads");
 
 	}
 	private static void parseCmdArgs(String[] args) {

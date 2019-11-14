@@ -26,7 +26,7 @@ public class WorkerPool {
         monitorThread.start();
         
         for(int i=0; i< threadArgs.getTotalRequest(); i++){
-            executorPool.execute(new WorkerThread("cmd"+i));
+            executorPool.execute(new RestWorkerThread(threadArgs.getRestURI(), threadArgs.getBody()));
         }
         
         Thread.sleep(30000);

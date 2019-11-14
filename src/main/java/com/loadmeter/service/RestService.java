@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class RestService {
 
-	public Object sendPostRequest(URI uri, JSONObject body, Map<String, String> headerMap) throws Exception {
+	public static Object sendPostRequest(URI uri, JSONObject body, Map<String, String> headerMap) throws Exception {
 		Object result = null;
 		HttpPost postRequest = new HttpPost(uri);
 		

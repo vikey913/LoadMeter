@@ -43,6 +43,7 @@ public class JSONUtil {
 	}
 	
 	public static Object parseAsObject(String jsonString, Class<?> classInstance) throws JsonParseException, JsonMappingException, IOException {
+		System.err.println(jsonString);
 		return new ObjectMapper().readValue(jsonString, classInstance);	
 	}
 
