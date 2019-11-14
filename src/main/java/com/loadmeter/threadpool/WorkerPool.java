@@ -18,7 +18,7 @@ public class WorkerPool {
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
 
         ThreadPoolExecutor executorPool = new ThreadPoolExecutor(threadArgs.getCorePool(), threadArgs.getMaximumPool(), 10, 
-        		TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(2), threadFactory, rejectionHandler);
+        		TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(threadArgs.getTotalRequest()), threadFactory, rejectionHandler);
 
         MyMonitorThread monitor = new MyMonitorThread(executorPool, 3);
         
@@ -33,6 +33,5 @@ public class WorkerPool {
         executorPool.shutdown();
         Thread.sleep(5000);
         monitor.shutdown();
-        
     }
 }
