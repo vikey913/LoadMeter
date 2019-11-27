@@ -56,32 +56,32 @@ public class RestService {
 		return responseJson;
 	}
 	
-	public static void main(String args[]) throws Exception {
-		RestService restService = new RestService();
-		String uri = "http://localhost:8090/Freshchannel/api/v1/messages/transaction";
-		String bodyString = "{\"to\": \"919750624490\",\"channelType\": \"WHATSAPP\",\"message\": {\"content\": {\"type\": \"TEXT\",\"text\": \"LoadTester\"}}}";
-		JSONObject body = new JSONObject();
-		body.put("to", "919750624490");
-		body.put("channelType", "WHATSAPP");
-		
-		JSONObject contentObject = new JSONObject();
-		contentObject.put("type", "TEXT");
-		contentObject.put("text", "Load tester");
-		JSONObject contentWrapper = new JSONObject();
-		contentWrapper.put("content", contentObject);
-		
-		body.put("message", contentWrapper);
-		
-		Map<String, String> headerMap = new HashMap();
-		headerMap.put("Authorization", "Bearer dmlnbmVzaDp3ZWxjb21lKjE=");
-		headerMap.put("Content-Type", "application/json");
-		headerMap.put("ORGANISATION_ID", "101");
-		headerMap.put("ACCOUNT_ID", "2");
-		body = (JSONObject) JSONUtil.parseAsObject(bodyString, JSONObject.class);
-		body = JSONUtil.parseAsJSONObject(bodyString);
-		System.out.println(body);
-		Object result = restService.sendPostRequest(new URI(uri), body, headerMap);
-		
-		System.out.println(result);
-	}
+//	public static void main(String args[]) throws Exception {
+//		RestService restService = new RestService();
+//		String uri = "http://localhost:8090/Freshchannel/api/v1/messages/transaction";
+//		String bodyString = "{\"to\": \"919750624490\",\"channelType\": \"WHATSAPP\",\"message\": {\"content\": {\"type\": \"TEXT\",\"text\": \"LoadTester\"}}}";
+//		JSONObject body = new JSONObject();
+//		body.put("to", "919750624490");
+//		body.put("channelType", "WHATSAPP");
+//		
+//		JSONObject contentObject = new JSONObject();
+//		contentObject.put("type", "TEXT");
+//		contentObject.put("text", "Load tester");
+//		JSONObject contentWrapper = new JSONObject();
+//		contentWrapper.put("content", contentObject);
+//		
+//		body.put("message", contentWrapper);
+//		
+//		Map<String, String> headerMap = new HashMap();
+//		headerMap.put("Authorization", "Bearer dmlnbmVzaDp3ZWxjb21lKjE=");
+//		headerMap.put("Content-Type", "application/json");
+//		headerMap.put("ORGANISATION_ID", "101");
+//		headerMap.put("ACCOUNT_ID", "2");
+//		body = (JSONObject) JSONUtil.parseAsObject(bodyString, JSONObject.class);
+//		body = JSONUtil.parseAsJSONObject(bodyString);
+//		System.out.println(body);
+//		Object result = restService.sendPostRequest(new URI(uri), body, headerMap);
+//		
+//		System.out.println(result);
+//	}
 }

@@ -33,5 +33,11 @@ public class WorkerPool {
         executorPool.shutdown();
         Thread.sleep(5000);
         monitor.shutdown();
+        System.out.println(
+        		String.format(
+        				"Total requests :: %d Success :: %d Failed :: %d", 
+        				threadArgs.getTotalRequest(), 
+        				RestWorkerThread.getSuccessCount(), 
+        				threadArgs.getTotalRequest() - RestWorkerThread.getSuccessCount()));
     }
 }

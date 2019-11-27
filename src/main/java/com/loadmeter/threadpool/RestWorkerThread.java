@@ -11,15 +11,19 @@ import com.loadmeter.service.RestService;
 import com.loadmeter.vo.ThreadPoolVO;
 
 public class RestWorkerThread implements Runnable {
-  
+	private static Integer successCount;
     private URI uri;
     private JSONObject body;
     private Map<String, String> headerMap;
     private String responseContains;
     
-    public RestWorkerThread() {
-    	
+    static {
+    	successCount = 0;
     }
+    
+    public RestWorkerThread() {}
+    
+    
     
     public RestWorkerThread(ThreadPoolVO threadArgs){
     	this.uri = threadArgs.getRestURI();
@@ -43,21 +47,23 @@ public class RestWorkerThread implements Runnable {
         	JSONObject result = RestService.sendPostRequest(this.uri, this.body, this.headerMap);
         	if(! result.toString().contains(responseContains)) {
         		throw new Exception("Response does not contain the string");
+        	} else {
+        		successCount++;
         	}
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private Map<String, String> getHeaderMap() {
-    	Map<String, String> headerMap = new HashMap();
-		headerMap.put("Authorization", "Bearer dmlnbmVzaDp3ZWxjb21lKjE=");
-		headerMap.put("Content-Type", "application/json");
-		headerMap.put("ORGANISATION_ID", "101");
-		headerMap.put("ACCOUNT_ID", "2");
-		
-		return headerMap;
-	}
+//    private Map<String, String> getHeaderMap() {
+//    	Map<String, String> headerMap = new HashMap();
+//		headerMap.put("Authorization", "Bearer dmlnbmVzaDp3ZWxjb21lKjE=");
+//		headerMap.put("Content-Type", "application/json");
+//		headerMap.put("ORGANISATION_ID", "101");
+//		headerMap.put("ACCOUNT_ID", "2");
+//		
+//		return headerMap;
+//	}
 
 	@Override
     public String toString(){
@@ -69,5 +75,9 @@ public class RestWorkerThread implements Runnable {
 	 */
 	public void setHeaderMap(Map<String, String> headerMap) {
 		this.headerMap = headerMap;
+	}
+	
+	public static Integer getSuccessCount() {
+		return successCount;
 	}
 }
