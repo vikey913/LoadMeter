@@ -8,17 +8,24 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 import com.loadmeter.service.RestService;
+import com.loadmeter.vo.ThreadPoolVO;
 
 public class RestWorkerThread implements Runnable {
   
     private URI uri;
     private JSONObject body;
+    private Map<String, String> headerMap;
+    private String responseContains;
     
-    public RestWorkerThread(){}
+    public RestWorkerThread() {
+    	
+    }
     
-    public RestWorkerThread(URI uri, JSONObject body){
-        this.uri = uri;
-        this.body = body;
+    public RestWorkerThread(ThreadPoolVO threadArgs){
+    	this.uri = threadArgs.getRestURI();
+        this.body = threadArgs.getBody();
+        this.responseContains = threadArgs.getResponseContains();
+        this.headerMap = threadArgs.getHeaderMap();
     }
 
     public void run() {
@@ -26,7 +33,6 @@ public class RestWorkerThread implements Runnable {
         try {
 			processRequest();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         System.out.println(Thread.currentThread().getName()+" End.");
@@ -34,7 +40,10 @@ public class RestWorkerThread implements Runnable {
 
     private void processRequest() throws Exception {
         try {
-        	RestService.sendPostRequest(this.uri, this.body, getHeaderMap());
+        	JSONObject result = RestService.sendPostRequest(this.uri, this.body, this.headerMap);
+        	if(! result.toString().contains(responseContains)) {
+        		throw new Exception("Response does not contain the string");
+        	}
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -54,4 +63,11 @@ public class RestWorkerThread implements Runnable {
     public String toString(){
         return this.uri + " " + this.body.toJSONString();
     }
+
+	/**
+	 * @param headerMap the headerMap to set
+	 */
+	public void setHeaderMap(Map<String, String> headerMap) {
+		this.headerMap = headerMap;
+	}
 }

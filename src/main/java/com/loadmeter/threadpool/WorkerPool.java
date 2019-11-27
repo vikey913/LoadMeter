@@ -26,10 +26,10 @@ public class WorkerPool {
         monitorThread.start();
         
         for(int i=0; i< threadArgs.getTotalRequest(); i++){
-            executorPool.execute(new RestWorkerThread(threadArgs.getRestURI(), threadArgs.getBody()));
+            executorPool.execute(new RestWorkerThread(threadArgs));
         }
         
-        Thread.sleep(30000);
+        Thread.sleep(5000);
         executorPool.shutdown();
         Thread.sleep(5000);
         monitor.shutdown();

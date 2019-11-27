@@ -18,8 +18,8 @@ import java.util.Map;
 
 public class RestService {
 
-	public static Object sendPostRequest(URI uri, JSONObject body, Map<String, String> headerMap) throws Exception {
-		Object result = null;
+	public static JSONObject sendPostRequest(URI uri, JSONObject body, Map<String, String> headerMap) throws Exception {
+		JSONObject result = null;
 		HttpPost postRequest = new HttpPost(uri);
 		
 		postRequest.setEntity(new StringEntity(body.toJSONString()));
@@ -36,7 +36,7 @@ public class RestService {
 		return result;
 	}
 	
-	private static Object buildResponseMap(HttpResponse httpResponse) throws Exception {
+	private static JSONObject buildResponseMap(HttpResponse httpResponse) throws Exception {
 		JSONParser parser = new JSONParser();
 		JSONObject responseJson = new JSONObject();
 		if (httpResponse.getEntity() != null) {
@@ -61,16 +61,16 @@ public class RestService {
 		String uri = "http://localhost:8090/Freshchannel/api/v1/messages/transaction";
 		String bodyString = "{\"to\": \"919750624490\",\"channelType\": \"WHATSAPP\",\"message\": {\"content\": {\"type\": \"TEXT\",\"text\": \"LoadTester\"}}}";
 		JSONObject body = new JSONObject();
-//		body.put("to", "919750624490");
-//		body.put("channelType", "WHATSAPP");
-//		
-//		JSONObject contentObject = new JSONObject();
-//		contentObject.put("type", "TEXT");
-//		contentObject.put("text", "Load tester");
-//		JSONObject contentWrapper = new JSONObject();
-//		contentWrapper.put("content", contentObject);
+		body.put("to", "919750624490");
+		body.put("channelType", "WHATSAPP");
 		
-//		body.put("message", contentWrapper);
+		JSONObject contentObject = new JSONObject();
+		contentObject.put("type", "TEXT");
+		contentObject.put("text", "Load tester");
+		JSONObject contentWrapper = new JSONObject();
+		contentWrapper.put("content", contentObject);
+		
+		body.put("message", contentWrapper);
 		
 		Map<String, String> headerMap = new HashMap();
 		headerMap.put("Authorization", "Bearer dmlnbmVzaDp3ZWxjb21lKjE=");
@@ -78,8 +78,8 @@ public class RestService {
 		headerMap.put("ORGANISATION_ID", "101");
 		headerMap.put("ACCOUNT_ID", "2");
 		body = (JSONObject) JSONUtil.parseAsObject(bodyString, JSONObject.class);
-//		body = JSONUtil.parseAsJSONObject(bodyString);
-//		System.out.println(body);
+		body = JSONUtil.parseAsJSONObject(bodyString);
+		System.out.println(body);
 		Object result = restService.sendPostRequest(new URI(uri), body, headerMap);
 		
 		System.out.println(result);

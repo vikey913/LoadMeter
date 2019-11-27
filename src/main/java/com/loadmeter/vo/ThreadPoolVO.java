@@ -1,8 +1,11 @@
 package com.loadmeter.vo;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.json.simple.JSONObject;
 
@@ -15,6 +18,8 @@ public class ThreadPoolVO {
 	Integer totalRequest;
 	URI restURI;
 	JSONObject body;
+	String responseContains;
+	Map<String, String> headerMap;
 	
 	ThreadPoolVO() {}
 	
@@ -94,23 +99,61 @@ public class ThreadPoolVO {
 		this.body = body;
 	}
 
+	/**
+	 * @return the responseContains
+	 */
+	public String getResponseContains() {
+		return responseContains;
+	}
+
+	/**
+	 * @param responseContains the responseContains to set
+	 */
+	public void setResponseContains(String responseContains) {
+		this.responseContains = responseContains;
+	}
+	
+	/**
+	 * @return the headerMap
+	 */
+	public Map<String, String> getHeaderMap() {
+		return headerMap;
+	}
+
+	/**
+	 * @param headerMap the headerMap to set
+	 */
+	public void setHeaderMap(Map<String, String> headerMap) {
+		this.headerMap = headerMap;
+	}
+
+
 	public static Options cmdOptions() {
 		Options options = new Options();
+		
 		options.addOption("c", true, "Get core thread count");
 		options.addOption("m", true, "Get max thread count");
     	options.addOption("r", true, "Get request count");
+    	options.addOption("H", true, "Headers for for the request");
     	options.addOption("uri", true, "URL for for the request");
     	options.addOption("body", true, "JSON for for the request");
+    	options.addOption("responseContains", true, "Response substring");
+    	options.addOption("help", false, "Usage");
     	return options;
 	}
 
 	public static ThreadPoolVO parse(CommandLine line) throws Exception {
+		CommandLineUtil.printHelp(line, "help", cmdOptions());
+		
 		ThreadPoolVO threadPoolVO = new ThreadPoolVO();
 		threadPoolVO.corePool = CommandLineUtil.getInteger(line, "c");
 		threadPoolVO.maximumPool = CommandLineUtil.getInteger(line, "m");
 		threadPoolVO.totalRequest = CommandLineUtil.getInteger(line, "r");
+		threadPoolVO.headerMap =  CommandLineUtil.getMap(line, "H");
 		threadPoolVO.restURI = CommandLineUtil.getURI(line, "uri");
 		threadPoolVO.body =  CommandLineUtil.getJSON(line, "body");
+		threadPoolVO.responseContains = CommandLineUtil.getString(line, "responseContains");
+		
 		return threadPoolVO;
 	}
 
